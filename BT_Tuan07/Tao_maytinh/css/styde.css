@@ -1,0 +1,47 @@
+#calculator {
+    height: 700px;
+    width: 400px;
+    border: 2px solid black;
+    margin-left: 600px;
+    margin-top: 100px;
+    background-color: pink;
+}
+
+#Title {
+    align-items: center;
+    color: blue;
+    font-size: 20px;
+    border: 2px solid black;
+}
+
+.Number {
+    display: flex;
+}
+
+.Number-1 {
+    display: flex;
+}
+
+.Number-2 {
+    display: flex;
+}
+
+.Number-3 {
+    display: flex;
+}
+
+.Input {
+    margin-top: 20px;
+    margin-left: 10px;
+    height: 70px;
+    width: 350px;
+    background-color: aqua;
+}
+
+.Result {
+    margin-top: 20px;
+    margin-left: 10px;
+    height: 70px;
+    width: 350px;
+    background-color: aqua;
+}
