@@ -58,6 +58,46 @@
     margin-top: -30px;
     margin-left: 110px;
 }
+.item1{
+    grid-area: header;
+    display: flex;
+    margin-left: 110px;
+}
+        
+.item2{
+    grid-area: menu;
+    display: flex;
+    margin-left: 10px;
+}
+        
+.item3{
+    grid-area: main;
+    display: flex;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+        
+.item4{
+    grid-area: right;
+    display: flex;
+    margin-right: 200px;
+    margin-left: 10px;
+}
+.item5{
+    grid-area: footer;
+    display: flex;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+.grid-container {
+    display: grid;
+    grid-template-areas: 'header menu  right ' 'header main footer';
+}
+        
+.grid-container>div {
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+}
 </style>
 
     
@@ -116,11 +156,28 @@
            <img src="img/Rating 303.png" alt="">
            <b style="font-size: 15px;">4.2D</b>
            <div style="font-size: 15px; color: grey;">(99 reviews)</div>
-           <div style="font-size: 15px; color: black; margin-left: 800px;">Share</div>
+           <div style="font-size: 15px; color: black; margin-left: 830px;">Share</div>
            <div class="Danh-img" style="margin-left: 50px;">  <img src="img/Heart 23.png" alt=""></div>
            <div style="font-size: 15px; color: black; margin-left: 10px;">Save</div>
-    
+        </div>
        
+         <div class="grid-container">
+            <div class="item1">
+                <img src="img/Image 1705.png" alt="">
+    
+            </div>
+            <div class="item2">
+                <img src="img/Image 1708.png" alt="">
+            </div>
+            <div class="item3">
+                <img src="img/Image 1706.png" alt="">
+            </div>
+            <div class="item4">
+                <img src="img/Image 1707.png" alt="">
+            </div>
+            <div class="item5">
+                <img src="img/Image 1709.png" alt="">
+            </div>
     
         </div>
     </div>
