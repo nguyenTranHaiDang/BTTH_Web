@@ -47,42 +47,40 @@
                 return true
             }
 
-
-            $("#selChuyenKhoa").change(function() {
+            function kiemtraChuyenKhoa() {
                 var chuyenkhoa = $("#selChuyenKhoa").val()
-                var sotienchuyenkhoa = chuyenkhoa == "Ngoai tong quat" ? 500000 : (chuyenkhoa == "NHI" ? 500000 : 500000)
-                $("#txtchuyenkhoa").val(sotienchuyenkhoa)
-            })
+                if (chuyenkhoa.trim() == '') {
+                    $("#tbchuyenkhoa").html("Chuyên khoa bắt buộc nhập")
+                    return false
+                }
+                $("#tbChuyenkhoa").html("*")
+                return true
+            }
 
             
-            //$("#selDichvu").change(function() {
-               // var dichvu = $("#selDichvu").val()
-            //var sotiendichvu= dichvu == "Kham benh" ? 600000 : (chuyenkhoa == "Dieu tri" ? 700000 : 800000)
-               // $("#txtdichvu").val(sotiendichvu)
-            // })
+            
 
-
+           
           
 
 
         
 
 
-            function kiemtraJoindate() {
-                var joindate = $("#dtJoindate").val()
-                if (joindate.trim() == '') {
-                    $("#tbJoindate").html("Join date bắt buộc nhập")
+            function kiemtraNgay() {
+                var ngay = $("#dtNgay").val()
+                if (ngay.trim() == '') {
+                    $("#tbNgay").html("Ngày khám bắt buộc bắt buộc nhập")
                     return false
                 }
 
-                var d1 = new Date(joindate)
+                var d1 = new Date(ngay)
                 var d2 = new Date()
-                d2.setDate(d2.getDate() + 7)
-                if (d1 < d2) {
-                    $("#tbJoindate").html("Join date phải sau ngày đăng ký ít nhất 7 ngày")
+                if (d1 > d2) {
+                    $("#tbNgay").html("Ngày khám phải sau ngày đăng ký ít nhất 1 ngày")
                     return false
                 }
-                $("#tbJoindate").html("*")
+                $("#tbNgay").html("Đăng ký ngày thành công")
                 return true
             }
 
@@ -90,7 +88,9 @@
 
             $("#txtMaBN").blur(kiemtraMaBenhNhan)
             $("#txtMKhau").blur( kiemtraMatKhau)
-           
+            $("#dtNgay").blur( kiemtraNgay)
+            $("#selChuyenKhoa").blur(kiemtraChuyenKhoa)
+
 
             var i = 0;
 
@@ -99,7 +99,8 @@
                     return false
                 var MaBN = $("#txtMaBN").val()
                 var MaKhau = $("#txtMKhau").val()
-                var sotienchuyenkhoa = $("#txtchuyenkhoa").val()
+                var ngay =  $("#dtNgay").val()
+                var chuyenkhoa = $("#selChuyenKhoa").val()
                 //var sotiendichvu = $("txtdichvu").val()
                 var dichvu = []
                 if ($("#chKhamBenh").is(":checked"))
@@ -108,7 +109,8 @@
                     dichvu.push("Điều trị ngoại trú")
                 if ($("#chBacSi").is(":checked"))
                     dichvu.push("Bác sĩ theo yêu cầu")
-                var row = "<tr><td>" + (++i) + "</td><td>" + MaBN + "</td><td>" + MaKhau +  "</td><td>" + dichvu + "</td><td>" + sotienchuyenkhoa +"</td></tr>"
+                var row = "<tr><td>" + (++i) + "</td><td>" + MaBN + "</td><td>" + MaKhau +  "</td><td>" + ngay + "</td><td>"
+                     + dichvu + "</td><td>" + chuyenkhoa +  "</td></tr>"
                 $("tbody").append(row)
                 $("#myModal").modal("hide")
             })
@@ -162,15 +164,15 @@
 
                         <div class="form-group">
                             <label for="">Mật khẩu</label>
-                            <input type="text" class="form-control"value="Mat khau" id="txtMKhau" required>
+                            <input type="text" class="form-control" placeholder="Mat khau" id="txtMKhau" required>
                             <span class="text-danger" id="tbMKhau">(*)</span>
                         </div>
                    
                  
                         <div class="form-group">
                             <label for="">Ngày khám</label>
-                            <input type="date" class="form-control"value="mm/dd/yyyy" id="txtSonguoi" required>
-                            <span class="text-danger" id="tbSonguoi">(*)</span>
+                            <input type="date" class="form-control" placeholder="mm/dd/yyyy" id="dtNgay" required>
+                            <span class="text-danger" id="tbNgay">(*)</span>
                         </div>
 
 
@@ -178,11 +180,43 @@
                             <div>
                                 <label for="">Loại dịch vụ</label>
                             </div>
+                            <div >
                             <input type="checkbox" name="dichvu" id="chKhamBenh" >Khám bệnh theo yêu cầu
                             <input type="checkbox" name="dichvu" id="chDieuTri" >Điều trị ngoại trú
                             <input type="checkbox" name="dichvu" id="chBacSi">Bác sĩ theo yêu cầu
+                          </div>
                            <!-- <input type="text" readonly placeholder="Loại dịch vụ" class="form-control" id="txtdichvu"> -->
                        </div>
+
+                       <div class="form-group">
+                        <label for="">Chuyên khoa</label> 
+                        <select name="" id="selChuyenKhoa" class="form-control">
+                            <option value="Ngoại tổng quát">Ngoại tổng quát</option>
+                            <option value="Nhi">Nhi</option>
+                            <option value="Nội tổng quát" selected>Nội tổng quát</option>
+                        </select>
+                    </div>
+                       
+                    <button type="button" class="btn btn-info col-2" id="btnRegister">Đặt lịch</button>
+                </div>
+                <!-- Ngày hiện tại -->
+                <!-- <div class="modal-footer"> 
+                    <p id="today">today</p>
+                </div>-->
+                <div class="modal-footer">
+                    <!-- data-dismiss="modal" giúp đóng Form thông qua Close -->
+                    <button type="button" class="btn btn-info col-1" id="btnRegister" data-dismiss="modal">Close</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+                   
+                   
+                   
 
                      
                             
@@ -194,31 +228,6 @@
                         
 
 
-                        <div class="form-group ">
-                            <label for="selChuyenKhoa ">Chuyên khoa</label>
-                            <select name=" " class="form-control " id="selChuyenKhoa">
-                                <option value="Ngoai tong quat" selected>Ngoại tổng quát</option>
-                                <option value="NHI" >Nhi</option>
-                                <option value="Noi tong quat">Nội tổng quát</option>
-                            </select>
-                            <input type="text" readonly placeholder="Ngoại tổng quát" class="form-control" id="txtchuyenkhoa">
-                        </div>
-
                      
                    
-                  
-                    <button type="button" class="btn btn-info col-2" id="btnRegister">Đặt lịch</button>
-                </div>
-                <!-- <div class="modal-footer"> 
-                    <p id="today">today</p>
-                </div>-->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info col-1" id="btnRegister" data-dismiss="modal">Close</button>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-</body>
-
-</html>
+             
