@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Cuoi Ky</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/jquery-3.6.0.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#today").html(new Date().toLocaleDateString());
+
+            function kiemtraMaBenhNhan() {
+                var MaBN = $("#txtMaBN").val()
+                var regex = /^(BN)-[0-9]{5}/
+                if (MaBN.trim() == '') {
+                    $("#tbBNhan").html("Mã bệnh nhân bắt buộc phải nhập")
+                    return false
+                }
+
+                if (!regex.test(MaBN)) {
+                    $("#tbBNhan").html("Mã bệnh nhân phải đúng định dạng BN-YYYYY")
+                    return false
+                }
+                 $("#tbBNhan").html("Thêm thành công theo định dạng (*)BN-YYYYY")
+                return true
+            }
+
+            function kiemtraMatKhau() {
+                var MaKhau = $("#txtMKhau").val()
+                var regex = /[a-zA-Z0-9]{8}/
+                if (MaKhau.trim() == '') {
+                    $("#tbMKhau").html("Mật khẩu bắt buộc phải nhập")
+                    return false
+                }
+
+                if (!regex.test(MaKhau)) {
+                    $("#tbMKhau").html("Mật khẩu phải nhập 6 kí tự bất kì trở lên")
+                    return false
+                }
+                 $("#tbMKhau").html("Thêm thành công")
+                return true
+            }
+
+
+            $("#selChuyenKhoa").change(function() {
+                var chuyenkhoa = $("#selChuyenKhoa").val()
+                var sotienchuyenkhoa = chuyenkhoa == "Ngoai tong quat" ? 500000 : (chuyenkhoa == "NHI" ? 500000 : 500000)
+                $("#txtchuyenkhoa").val(sotienchuyenkhoa)
+            })
+
+            
+            //$("#selDichvu").change(function() {
+               // var dichvu = $("#selDichvu").val()
+            //var sotiendichvu= dichvu == "Kham benh" ? 600000 : (chuyenkhoa == "Dieu tri" ? 700000 : 800000)
+               // $("#txtdichvu").val(sotiendichvu)
+            // })
+
+
+          
+
+
+        
+
+
+            function kiemtraNgay() {
+                var ngay = $("#dtNgay").val()
+                if (ngay.trim() == '') {
+                    $("#tbNgay").html("Ngày khám bắt buộc bắt buộc nhập")
+                    return false
+                }
+
+                var d1 = new Date(ngay)
+                var d2 = new Date()
+                if (d1 > d2) {
+                    $("#tbNgay").html("Ngày khám phải sau ngày đăng ký ít nhất 1 ngày")
+                    return false
+                }
+                $("#tbNgay").html("Đăng ký ngày thành công")
+                return true
+            }
+
+           
+
+            $("#txtMaBN").blur(kiemtraMaBenhNhan)
+            $("#txtMKhau").blur( kiemtraMatKhau)
+            $("#dtNgay").blur( kiemtraNgay)
+
+            var i = 0;
+
+            $("#btnRegister").click(function() {
+                if (!kiemtraMaBenhNhan() || !kiemtraMatKhau())
+                    return false
+                var MaBN = $("#txtMaBN").val()
+                var MaKhau = $("#txtMKhau").val()
+                var sotienchuyenkhoa = $("#txtchuyenkhoa").val()
+                var ngay =  $("#dtNgay").val()
+                //var sotiendichvu = $("txtdichvu").val()
+                var dichvu = []
+                if ($("#chKhamBenh").is(":checked"))
+                    dichvu.push("Khám bệnh theo yêu cầu")
+                if ($("#chDieuTri").is(":checked"))
+                    dichvu.push("Điều trị ngoại trú")
+                if ($("#chBacSi").is(":checked"))
+                    dichvu.push("Bác sĩ theo yêu cầu")
+                var row = "<tr><td>" + (++i) + "</td><td>" + MaBN + "</td><td>" + MaKhau +  "</td><td>" + ngay + "</td><td>"
+                     +dichvu+ "</td><td>" +sotienchuyenkhoa+  "</td></tr>"
+                $("tbody").append(row)
+                $("#myModal").modal("hide")
+            })
+        })
+    </script>
+</head>
+
+<body>
+   <img style="width: 100%; height: 300px;" src="../img/Benhvien.jpg" alt="">
+
+    <ul class="nav nav-bar " style="padding: 10px">
+        <li class="nav-item"><a href="" class="nav-link">Trang chủ</a></li>
+        <li class="nav-item dropdown"><a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Đặt lịch</a>
+            <ul class="dropdown-menu">
+                <li class="dropdown-item" data-toggle="modal" data-target="#myModal">Form đặt lịch</li>
+            </ul>
+        </li>
+    </ul>
+    
+    <table class="table table-hover table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Mã bệnh nhân</th>
+                <th>Mật khẩu</th>
+                <th>Ngày khám</th>
+                <th>Phụ thu dịch vụ</th>
+                <th>Chuyên khoa</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <h3 class="text-center">21046711 - Nguyễn Trần Hải Đăng - DHKTPM17ATT</h3>
+    <!-- modal -->
+    <div class="modal face" id="myModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="text-center"> Đặt lịch khám online</h3>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                  
+                    <div class="form-group">
+                        <label for="">Mã bệnh nhân</label>
+                        <input type="text" class="form-control" placeholder="Ma benh nhan" id="txtMaBN" required>
+                        <span class="text-danger" id="tbBNhan">(*)BN.YYYYYY</span>
+                    </div>
+
+                        <div class="form-group">
+                            <label for="">Mật khẩu</label>
+                            <input type="text" class="form-control" placeholder="Mat khau" id="txtMKhau" required>
+                            <span class="text-danger" id="tbMKhau">(*)</span>
+                        </div>
+                   
+                 
+                        <div class="form-group">
+                            <label for="">Ngày khám</label>
+                            <input type="date" class="form-control" placeholder="mm/dd/yyyy" id="dtNgay" required>
+                            <span class="text-danger" id="tbNgay">(*)</span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div>
+                                <label for="">Loại dịch vụ</label>
+                            </div>
+                            <div >
+                            <input type="checkbox" name="dichvu" id="chKhamBenh" >Khám bệnh theo yêu cầu
+                            <input type="checkbox" name="dichvu" id="chDieuTri" >Điều trị ngoại trú
+                            <input type="checkbox" name="dichvu" id="chBacSi">Bác sĩ theo yêu cầu
+                          </div>
+                           <!-- <input type="text" readonly placeholder="Loại dịch vụ" class="form-control" id="txtdichvu"> -->
+                       </div>
+
+                     
+                            
+
+                       
+
+                     
+
+                        
+
+
+                        <div class="form-group ">
+                            <label for="selChuyenKhoa ">Chuyên khoa</label>
+                            <select name=" " class="form-control " id="selChuyenKhoa">
+                                <option value="Ngoai tong quat" selected>Ngoại tổng quát</option>
+                                <option value="NHI" >Nhi</option>
+                                <option value="Noi tong quat">Nội tổng quát</option>
+                            </select>
+                            <input type="text" readonly placeholder="Ngoại tổng quát" class="form-control" id="txtchuyenkhoa">
+                        </div>
+
+                     
+                   
+                  
+                    <button type="button" class="btn btn-info col-2" id="btnRegister">Đặt lịch</button>
+                </div>
+                <!-- <div class="modal-footer"> 
+                    <p id="today">today</p>
+                </div>-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info col-1" id="btnRegister" data-dismiss="modal">Close</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
