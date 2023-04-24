@@ -15,13 +15,19 @@
         $(document).ready(function() {
             $("#today").html(new Date().toLocaleDateString());
 
-            function kiemtraFullname() {
-                var fullname = $("#txtFullname").val()
-                if (fullname.trim() == '') {
-                    $("#tbFullname").html("Full name bắt buộc nhập")
+            function kiemtraMaBenhNhan() {
+                var MaBN = $("#txtMaBN").val()
+                var regex = /^(BN)-[0-9]{5}/
+                if (MaBN.trim() == '') {
+                    $("#tbBNhan").html("Mã bệnh nhân bắt buộc phải nhập")
                     return false
                 }
-                $("#tbFullname").html("*")
+
+                if (!regex.test(MaBN)) {
+                    $("#tbBNhan").html("Mã bệnh nhân phải đúng định dạng BN-YYYYY")
+                    return false
+                }
+                 $("#tbBNhan").html("Thêm thành công theo định dạng (*)BN-YYYYY")
                 return true
             }
 
@@ -79,17 +85,9 @@
                 return true
             }
 
-            function kiemtraImage() {
-                var image = $("#flImage").val()
-                if (image.trim() == '') {
-                    $("#tbImage").html("Image bắt buộc chọn")
-                    return false
-                }
-                $("#tbImage").html("*")
-                return true
-            }
+           
 
-            $("#txtFullname").blur(kiemtraFullname)
+            $("#txtMaBN").blur(kiemtraMaBenhNhan)
             $("#txtEmail").blur(kiemtraEmail)
             $("#txtReemail").blur(kiemtraReemail)
             $("#txtPhonenumber").blur(kiemtraPhonenumber)
@@ -99,16 +97,16 @@
             var i = 0;
 
             $("#btnRegister").click(function() {
-                if (!kiemtraFullname() || !kiemtraEmail() || !kiemtraReemail() || !kiemtraPhonenumber || !kiemtraJoindate() || !kiemtraImage())
+                if (!kiemtraMaBenhNhan() || !kiemtraEmail() || !kiemtraReemail() || !kiemtraPhonenumber || !kiemtraJoindate() || !kiemtraImage())
                     return false
-                var fullname = $("#txtFullname").val()
+                var MaBN = $("#txtMaBN").val()
                 var email = $("#txtEmail").val()
                 var reemail = $("#txtReemail").val()
                 var phonenumber = $("#txtPhonenumber").val()
                 var joindate = $("#dtJoindate").val()
                 var image = $("#flImage").val()
 
-                var row = "<tr><td>" + (++i) + "</td><td>" + fullname + "</td><td>" + email + "</td><td>" + phonenumber + "</td><td>" + joindate + "</td><td>" + image + "</td></tr>"
+                var row = "<tr><td>" + (++i) + "</td><td>" + MaBN + "</td><td>" + email + "</td><td>" + phonenumber + "</td><td>" + joindate + "</td><td>" + image + "</td></tr>"
                 $("tbody").append(row)
                 $("#myModal").modal("hide")
             })
@@ -156,8 +154,8 @@
                   
                     <div class="form-group">
                         <label for="">Mã bệnh nhân</label>
-                        <input type="text" class="form-control"value="Ma benh nhan" id="txtSonguoi" required>
-                        <span class="text-danger" id="tbSonguoi">(*)BN.YYYYYY</span>
+                        <input type="text" class="form-control"value="Ma benh nhan" id="txtMaBN" required>
+                        <span class="text-danger" id="tbBNhan">(*)BN.YYYYYY</span>
                     </div>
 
                         <div class="form-group">
