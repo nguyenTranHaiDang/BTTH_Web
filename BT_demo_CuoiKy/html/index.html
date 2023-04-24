@@ -31,41 +31,42 @@
                 return true
             }
 
-            function kiemtraEmail() {
-                var email = $("#txtEmail").val()
-                if (email.trim() == '') {
-                    $("#tbEmail").html("Email bắt buộc nhập")
-                    return false
-                }
-                $("#tbEmail").html("*")
-                return true
-            }
-
-            function kiemtraReemail() {
-                var reemail = $("#txtReemail").val()
-                if (reemail.trim() == '') {
-                    $("#tbReemail").html("Reemail bắt buộc nhập")
-                    return false
-                }
-                $("#tbRemail").html("*")
-                return true
-            }
-
-            function kiemtraPhonenumber() {
-                var phonenumber = $("#txtPhonenumber").val()
-                var regex = /^[0-9]{4}-[0-9]{3}-[0-9]{3}$/
-                if (phonenumber.trim() == '') {
-                    $("#tbPhonenumber").html("Phone Number bắt buộc nhập")
+            function kiemtraMatKhau() {
+                var MaKhau = $("#txtMKhau").val()
+                var regex = /[a-zA-Z0-9]{8}/
+                if (MaKhau.trim() == '') {
+                    $("#tbMKhau").html("Mật khẩu bắt buộc phải nhập")
                     return false
                 }
 
-                if (!regex.test(phonenumber)) {
-                    $("#tbPhonenumber").html("Phone number có mẫu sau: 0000-000-000 (0 : là ký số)")
+                if (!regex.test(MaKhau)) {
+                    $("#tbMKhau").html("Mật khẩu phải nhập 6 kí tự bất kì trở lên")
                     return false
                 }
-                $("#tbPhonenumber").html("*")
+                 $("#tbMKhau").html("Thêm thành công")
                 return true
             }
+
+
+            $("#selChuyenKhoa").change(function() {
+                var chuyenkhoa = $("#selChuyenKhoa").val()
+                var sotienchuyenkhoa = chuyenkhoa == "Ngoai tong quat" ? 500000 : (chuyenkhoa == "NHI" ? 500000 : 500000)
+                $("#txtchuyenkhoa").val(sotienchuyenkhoa)
+            })
+
+            
+            //$("#selDichvu").change(function() {
+               // var dichvu = $("#selDichvu").val()
+            //var sotiendichvu= dichvu == "Kham benh" ? 600000 : (chuyenkhoa == "Dieu tri" ? 700000 : 800000)
+               // $("#txtdichvu").val(sotiendichvu)
+            // })
+
+
+          
+
+
+        
+
 
             function kiemtraJoindate() {
                 var joindate = $("#dtJoindate").val()
@@ -88,25 +89,26 @@
            
 
             $("#txtMaBN").blur(kiemtraMaBenhNhan)
-            $("#txtEmail").blur(kiemtraEmail)
-            $("#txtReemail").blur(kiemtraReemail)
-            $("#txtPhonenumber").blur(kiemtraPhonenumber)
-            $("#dtJoindate").blur(kiemtraJoindate)
-            $("#flImage").blur(kiemtraImage)
+            $("#txtMKhau").blur( kiemtraMatKhau)
+           
 
             var i = 0;
 
             $("#btnRegister").click(function() {
-                if (!kiemtraMaBenhNhan() || !kiemtraEmail() || !kiemtraReemail() || !kiemtraPhonenumber || !kiemtraJoindate() || !kiemtraImage())
+                if (!kiemtraMaBenhNhan() || !kiemtraMatKhau())
                     return false
                 var MaBN = $("#txtMaBN").val()
-                var email = $("#txtEmail").val()
-                var reemail = $("#txtReemail").val()
-                var phonenumber = $("#txtPhonenumber").val()
-                var joindate = $("#dtJoindate").val()
-                var image = $("#flImage").val()
-
-                var row = "<tr><td>" + (++i) + "</td><td>" + MaBN + "</td><td>" + email + "</td><td>" + phonenumber + "</td><td>" + joindate + "</td><td>" + image + "</td></tr>"
+                var MaKhau = $("#txtMKhau").val()
+                var sotienchuyenkhoa = $("#txtchuyenkhoa").val()
+                //var sotiendichvu = $("txtdichvu").val()
+                var dichvu = []
+                if ($("#chKhamBenh").is(":checked"))
+                    dichvu.push("Khám bệnh theo yêu cầu")
+                if ($("#chDieuTri").is(":checked"))
+                    dichvu.push("Điều trị ngoại trú")
+                if ($("#chBacSi").is(":checked"))
+                    dichvu.push("Bác sĩ theo yêu cầu")
+                var row = "<tr><td>" + (++i) + "</td><td>" + MaBN + "</td><td>" + MaKhau +  "</td><td>" + dichvu + "</td><td>" + sotienchuyenkhoa +"</td></tr>"
                 $("tbody").append(row)
                 $("#myModal").modal("hide")
             })
@@ -142,7 +144,7 @@
         </tbody>
     </table>
     <h3 class="text-center">21046711 - Nguyễn Trần Hải Đăng - DHKTPM17ATT</h3>
-    <!--modal-->
+    <!-- modal -->
     <div class="modal face" id="myModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -154,14 +156,14 @@
                   
                     <div class="form-group">
                         <label for="">Mã bệnh nhân</label>
-                        <input type="text" class="form-control"value="Ma benh nhan" id="txtMaBN" required>
+                        <input type="text" class="form-control" placeholder="Ma benh nhan" id="txtMaBN" required>
                         <span class="text-danger" id="tbBNhan">(*)BN.YYYYYY</span>
                     </div>
 
                         <div class="form-group">
                             <label for="">Mật khẩu</label>
-                            <input type="text" class="form-control"value="Mat khau" id="txtSonguoi" required>
-                            <span class="text-danger" id="tbSonguoi">(*)</span>
+                            <input type="text" class="form-control"value="Mat khau" id="txtMKhau" required>
+                            <span class="text-danger" id="tbMKhau">(*)</span>
                         </div>
                    
                  
@@ -171,33 +173,38 @@
                             <span class="text-danger" id="tbSonguoi">(*)</span>
                         </div>
 
-                        <!-- <div class="col-sm-9"> 
-                            <label for="" class="col-form-label">Ngày khám</label>
-                            <input type="text" class="form-control" value="mm/dd/yyyy" id="txtFullname">
-                            <span class="text-danger" id="tbFullname">(*)</span>
-                        </div> -->
 
                         <div class="form-group">
-                            <label for="">Loại dịch vụ</label>
-                          <div style="margin-left: 20px;">
-                            <input type="checkbox" id="cbNhanvienphucvurieng" checked>Khám bệnh theo yêu cầu
-                            <input type="checkbox" id="cbHoatuoi" checked>Điều trị ngoại trú
-                            <input type="checkbox" id="cbBacsi" checked>Bác sĩ theo yêu cầu
-                         </div>
-                           
-    
-                        </div>
+                            <div>
+                                <label for="">Loại dịch vụ</label>
+                            </div>
+                            <input type="checkbox" name="dichvu" id="chKhamBenh" >Khám bệnh theo yêu cầu
+                            <input type="checkbox" name="dichvu" id="chDieuTri" >Điều trị ngoại trú
+                            <input type="checkbox" name="dichvu" id="chBacSi">Bác sĩ theo yêu cầu
+                           <!-- <input type="text" readonly placeholder="Loại dịch vụ" class="form-control" id="txtdichvu"> -->
+                       </div>
+
+                     
+                            
+
+                       
+
+                     
+
+                        
 
 
-                        <div class="form-group">
-                            <label for="">Chuyên khoa</label> <span class="text-danger" id="tbLoaitiec"></span>
-                            <select name="" id="selLoaitiec" class="form-control">
-                                <option value="Set Menu">Ngoại tổng quat</option>
-                                <option value="Buffet">Nhi</option>
-                                <option value="Finger Food" selected>Nội tổng quát</option>
+                        <div class="form-group ">
+                            <label for="selChuyenKhoa ">Chuyên khoa</label>
+                            <select name=" " class="form-control " id="selChuyenKhoa">
+                                <option value="Ngoai tong quat" selected>Ngoại tổng quát</option>
+                                <option value="NHI" >Nhi</option>
+                                <option value="Noi tong quat">Nội tổng quát</option>
                             </select>
+                            <input type="text" readonly placeholder="Ngoại tổng quát" class="form-control" id="txtchuyenkhoa">
                         </div>
 
+                     
                    
                   
                     <button type="button" class="btn btn-info col-2" id="btnRegister">Đặt lịch</button>
@@ -206,7 +213,7 @@
                     <p id="today">today</p>
                 </div>-->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info col-1" id="btnRegister">Close</button>
+                    <button type="button" class="btn btn-info col-1" id="btnRegister" data-dismiss="modal">Close</button>
                 </div>
                 
             </div>
