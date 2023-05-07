@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oder</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/jquery-3.6.0.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#today").html(new Date().toLocaleDateString());
+
+            function kiemtraMaKH() {
+                var MaKhachHang = $("#txtKhachHang").val()
+                var regex = /^(KH)[0-9]{3}/
+                if (MaKhachHang.trim() == '') {
+                    $("#tbMaKhachHang").html("Mã khách hàng bắt buộc phải nhập")
+                    return false
+                }
+
+                if (!regex.test(MaKhachHang)) {
+                    $("#tbMaKhachHang").html("Mã khách hàng phải nhập theo đúng định dạng")
+                    return false
+                }
+                 $("#tbMaKhachHang").html("Thêm thành công mã khách hàng theo định dạng")
+                return true
+            }
+
+            function kiemtraHoTen() {
+                var HoTen = $("#txtHTen").val()
+                var regex = /[a-zA-Z]+/
+                if (HoTen.trim() == '') {
+                    $("#tbHTen").html("Họ tên bắt buộc phải nhập")
+                    return false
+                }
+
+                if (!regex.test(HoTen)) {
+                    $("#tbHTen").html("Họ tên phải nhập theo đúng định dạng")
+                    return false
+                }
+                 $("#tbHTen").html("Thêm thành công họ tên theo định dạng")
+                return true
+            }
+
+
+            $("#selMenu").change(function() {
+                var menu = $("#selMenu").val()
+                var sotienmenu = menu == "Ca phe" ? 650000 : (menu == "Tra" ? 500000 : (menu == "Banh man" ? 40000 : (menu == "Banh ngot" ? 40000
+                : (menu == "Snack" ? 35000 : (menu == "Ca phe tai nha" ? 45000 : 27000))))) 
+                $("#txtmenu").val(sotienmenu)
+            })
+
+            
+            //$("#selDichvu").change(function() {
+               // var dichvu = $("#selDichvu").val()
+            //var sotiendichvu= dichvu == "Kham benh" ? 600000 : (chuyenkhoa == "Dieu tri" ? 700000 : 800000)
+               // $("#txtdichvu").val(sotiendichvu)
+            // })
+
+
+          
+
+
+        
+
+
+            function kiemtraNgayDat() {
+                var ngaydat = $("#dtNgayDat").val()
+                if (ngaydat.trim() == '') {
+                    $("#tbNgayDat").html("Ngày đặt bắt buộc bắt buộc nhập")
+                    return false
+                }
+
+                var d1 = new Date(ngaydat)
+                var d2 = new Date()
+                if (d1 = d2) {
+                    $("#tbNgayDat").html("Ngày đặt phải nhập theo đúng ngày Oder")
+                    return false
+                }
+                $("#tbNgayDat").html("Đặt thành công")
+                return true
+            }
+
+
+            $("#txtKhachHang").blur(kiemtraMaKH)
+            $("#txtHTen").blur(kiemtraHoTen)
+            $("#dtNgayDat").blur(kiemtraNgayDat)
+
+
+            var i = 0;
+
+            $("#btnRegister").click(function() {
+                if (!kiemtraMaKH() || !kiemtraHoTen())
+                    return false
+                var MaKhachHang = $("#txtKhachHang").val()
+                var HoTen  = $("#txtHTen").val()
+                var sotienmenu = $("#txtmenu").val()
+                var ngaydat =  $("#dtNgayDat").val()
+                var phucvu = []
+                if ($("#chTaiQuan").is(":checked"))
+                    phucvu.push("Tại quán")
+                if ($("#chMangVe").is(":checked"))
+                    phucvu.push("Mang về")
+                var row = "<tr><td>" + (++i) + "</td><td>" + MaKhachHang + "</td><td>" + HoTen +  "</td><td>" + ngaydat + "</td><td>"
+                     + phucvu + "</td><td>" + sotienmenu +  "</td></tr>"
+                $("tbody").append(row)
+                $("#myModal").modal("hide")
+            })
+        })
+    </script>
+</head>
+
+<body>
+   <img style="width: 100%; height: 500px;" src="../img/caphee.png" alt="">
+
+    <ul class="nav nav-bar " style="padding: 10px">
+        <li class="nav-item"><a href="https://thecoffeehouse.com/" class="nav-link">THE COFFEE HOUSE</a></li>
+        <li class="nav-item"><a href="Home.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="About.html" class="nav-link">About</a></li>
+        <li class="nav-item"><a href="" class="nav-link">Menu</a></li>
+        <li class="nav-item"><a href="Coffee.html" class="nav-link">Coffee</a></li>
+        <li class="nav-item"><a href="Tea.html" class="nav-link">Tea</a></li>
+        <li class="nav-item"><a href="Foods.html" class="nav-link">Foods</a></li>
+        <li class="nav-item"><a href="" class="nav-link">Contact</a></li>
+        <li class="nav-item"><a href="" class="nav-link">Blogs</a></li>
+        <li class="nav-item dropdown"><a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Oder</a>
+            <ul class="dropdown-menu">
+                <li class="dropdown-item" data-toggle="modal" data-target="#myModal">Oder now</li>
+            </ul>
+        </li>
+
+    </ul>
+    
+    <table class="table table-hover table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Mã khách hàng</th>
+                <th>Họ tên</th>
+                <th>Ngày đặt</th>
+                <th>Loại phục vụ</th>
+                <th>Thanh toán</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <h3 class="text-center">Niềm vui của quý khách chính là niềm vui của chúng tôi!</h3>
+    <!-- modal -->
+    <div class="modal face" id="myModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="text-center">ODER NOW</h3>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                  
+                    <div class="form-group">
+                        <label for="">Mã khách hàng</label>
+                        <input type="text" class="form-control" placeholder="Mã khách hàng" id="txtKhachHang" required>
+                        <span class="text-danger" id="tbMaKhachHang">(*)</span>
+                    </div>
+
+                        <div class="form-group">
+                            <label for="">Họ tên</label>
+                            <input type="text" class="form-control" placeholder="Họ tên" id="txtHTen" required>
+                            <span class="text-danger" id="tbHTen">(*)</span>
+                        </div>
+                   
+                 
+                        <div class="form-group">
+                            <label for="">Ngày đặt</label>
+                            <input type="date" class="form-control" placeholder="mm/dd/yyyy" id="dtNgayDat" required>
+                            <span class="text-danger" id="tbNgayDat">(*)</span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div>
+                                <label for="">Loại phục vụ</label>
+                            </div>
+                            <div >
+                            <input type="checkbox" name="phucvu" id="chTaiQuan" >Tại quán
+                            <input type="checkbox" name="phucvu" id="chMangVe" >Mang về
+                          </div>
+                       </div>
+
+
+                      <div class="form-group ">
+                            <label for="selMenu">Menu</label>
+                            <select name=" " class="form-control " id="selMenu">
+                                <option value="Ca phe" selected>Cà phê</option>
+                                <option value="Tra" >Trà</option>
+                                <option value="Banh man">Bánh mặn</option>
+                                <option value="Banh ngot">Bánh ngọt</option>
+                                <option value="Snack">Snack</option>
+                                <option value="Ca phe tai nha">Cà phê tại nhà</option>
+                                <option value="Tra sua">Trà sữa</option>
+                            </select>
+                            <input type="text" readonly placeholder="Menu" class="form-control" id="txtmenu">
+                        </div>
+
+                     
+                   
+                  
+                    <button type="button" class="btn btn-info col-2" id="btnRegister">Oder</button>
+                </div>
+                <!-- <div class="modal-footer"> 
+                    <p id="today">today</p>
+                </div>-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info col-1" id="btnRegister" data-dismiss="modal">Close</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
